@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            max-width: 400px;
+            width: 90%;
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            background-color: #f8f8f8;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-bottom: 2px solid #3498db;
+            font-weight: bold;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .form {
+            display: none;
+        }
+        
+        .form.active {
+            display: block;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .password-toggle {
+            position: relative;
+        }
+        
+        .toggle-icon {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+        }
+        
+        .forgot-password a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .social-login p {
+            margin-bottom: 15px;
+            color: #777;
+            position: relative;
+        }
+        
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            display: inline-block;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .social-button:hover {
+            background: #f5f5f5;
+        }
+        
+        .alert {
+            padding: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="login">Login</div>
+            <div class="tab" data-tab="signup">Sign Up</div>
+        </div>
+        
+        <div class="form-container">
+            <!-- Login Form -->
+            <div class="form active" id="login-form">
+                <h2>Welcome Back</h2>
+                <div class="alert" id="login-alert"></div>
+                
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="login-password" required>
+                            <span class="toggle-icon" onclick="togglePassword('login-password')">👁️</span>
+                        </div>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit">Login</button>
+                </form>
+                
+                
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div class="form" id="signup-form">
+                <h2>Create Account</h2>
+                <div class="alert" id="signup-alert"></div>
+                
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="signup-password" required>
+                            <span class="toggle-icon" onclick="togglePassword('signup-password')">👁️</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="signup-confirm" required>
+                            <span class="toggle-icon" onclick="togglePassword('signup-confirm')">👁️</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-role">Sign Up As</label>
+                        <select id="signup-role" required>
+                          <option value="">Select Role</option>
+                          <option value="client">Client</option>
+                          <option value="artist">Artist</option>
+                        </select>
+                      </div>
+                      
+                    
+                    <button type="submit">Sign Up</button>
+                </form>
+                
+                
+            </div>
+            
+            <!-- Forgot Password Form -->
+            <div class="form" id="forgot-form">
+                <h2>Reset Password</h2>
+                <div class="alert" id="forgot-alert"></div>
+                
+                <form onsubmit="handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label for="forgot-email">Email</label>
+                        <input type="email" id="forgot-email" required>
+                    </div>
+                    
+                    <button type="submit">Send Reset Link</button>
+                </form>
+                
+                <div class="forgot-password">
+                    <a href="#" onclick="showLogin()">Back to Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all forms
+                document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+                
+                // Show selected form
+                const formId = tab.getAttribute('data-tab') + '-form';
+                document.getElementById(formId).classList.add('active');
+                
+                // Clear alerts
+                document.querySelectorAll('.alert').forEach(alert => {
+                    alert.textContent = '';
+                    alert.style.display = 'none';
+                });
+            });
+        });
+        
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+        
+        // Show forgot password form
+        function showForgotPassword() {
+            document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+            document.getElementById('forgot-form').classList.add('active');
+        }
+        
+        // Back to login
+        function showLogin() {
+            document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+            document.getElementById('login-form').classList.add('active');
+        }
+        
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Validate input
+            if (!email || !password) {
+                showAlert('login-alert', 'Please fill in all fields', false);
+                return;
+            }
+            
+            // In a real application, you would send this data to your server
+            console.log('Login attempt:', { email, password });
+            
+            // Simulate API call
+            // Replace this with your actual login logic
+            setTimeout(() => {
+                // For demonstration, let's pretend login was successful
+                showAlert('login-alert', 'Login successful! Redirecting...', true);
+                
+                // In a real application, you would redirect or update UI based on login success
+                // window.location.href = 'dashboard.html';
+            }, 1000);
+        }
+        
+        // Handle signup form submission
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+            
+            // Validate input
+            if (!name || !email || !password || !confirm) {
+                showAlert('signup-alert', 'Please fill in all fields', false);
+                return;
+            }
+            
+            if (password !== confirm) {
+                showAlert('signup-alert', 'Passwords do not match', false);
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('signup-alert', 'Password must be at least 6 characters', false);
+                return;
+            }
+            
+            // In a real application, you would send this data to your server
+            console.log('Signup attempt:', { name, email, password });
+            
+            // Simulate API call
+            // Replace this with your actual signup logic
+            setTimeout(() => {
+                // For demonstration, let's pretend signup was successful
+                showAlert('signup-alert', 'Account created successfully! You can now login.', true);
+                
+                // Clear form
+                document.getElementById('signup-name').value = '';
+                document.getElementById('signup-email').value = '';
+                document.getElementById('signup-password').value = '';
+                document.getElementById('signup-confirm').value = '';
+                
+                // Switch to login tab after a delay
+                setTimeout(() => {
+                    document.querySelector('.tab[data-tab="login"]').click();
+                }, 2000);
+            }, 1000);
+        }
+        
+        // Handle forgot password form submission
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('forgot-email').value;
+            
+            // Validate input
+            if (!email) {
+                showAlert('forgot-alert', 'Please enter your email', false);
+                return;
+            }
+            
+            // In a real application, you would send this data to your server
+            console.log('Password reset request:', { email });
+            
+            // Simulate API call
+            // Replace this with your actual password reset logic
+            setTimeout(() => {
+                // For demonstration, let's pretend email was sent
+                showAlert('forgot-alert', 'Password reset link sent to your email!', true);
+                
+                // Clear form
+                document.getElementById('forgot-email').value = '';
+                
+                // Switch back to login tab after a delay
+                setTimeout(() => {
+                    showLogin();
+                }, 3000);
+            }, 1000);
+        }
+        
+        // Social login/signup
+        function socialLogin(provider) {
+            console.log(`Logging in with ${provider}`);
+            // Implement social login logic here
+            // This would typically involve redirecting to the OAuth provider
+        }
+        
+        function socialSignup(provider) {
+            console.log(`Signing up with ${provider}`);
+            // Implement social signup logic here
+            // This would typically involve redirecting to the OAuth provider
+        }
+        
+        // Show alert message
+        function showAlert(alertId, message, isSuccess) {
+            const alert = document.getElementById(alertId);
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            if (isSuccess) {
+                alert.classList.add('success');
+            } else {
+                alert.classList.remove('success');
+            }
+        }
+
+        // Check URL parameters on page load to determine which tab to show
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tab = urlParams.get('tab');
+  
+  if (tab === 'signup') {
+    // Show signup tab
+    document.querySelector('.tab[data-tab="signup"]').click();
+  } else {
+    // Default to login tab
+    document.querySelector('.tab[data-tab="login"]').click();
+  }
+});
+
+function handleSignup(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const confirm = document.getElementById('signup-confirm').value;
+    const role = document.getElementById('signup-role').value;
+
+    if (!name || !email || !password || !confirm || !role) {
+        showAlert('signup-alert', 'Please fill in all fields including your role.', false);
+        return;
+    }
+
+    if (password !== confirm) {
+        showAlert('signup-alert', 'Passwords do not match', false);
+        return;
+    }
+
+    if (password.length < 6) {
+        showAlert('signup-alert', 'Password must be at least 6 characters', false);
+        return;
+    }
+
+    // Log signup attempt
+    console.log('Signup attempt:', { name, email, password, role });
+
+    // Simulate success
+    setTimeout(() => {
+        showAlert('signup-alert', 'Account created successfully as ' + role + '! You can now login.', true);
+
+        // Reset form
+        document.getElementById('signup-name').value = '';
+        document.getElementById('signup-email').value = '';
+        document.getElementById('signup-password').value = '';
+        document.getElementById('signup-confirm').value = '';
+        document.getElementById('signup-role').value = '';
+
+        setTimeout(() => {
+            document.querySelector('.tab[data-tab="login"]').click();
+        }, 2000);
+    }, 1000);
+}
+
+    </script>
+</body>
+</html>

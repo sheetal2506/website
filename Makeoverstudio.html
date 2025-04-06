@@ -316,8 +316,7 @@
         }
         
         .service-card:hover {
-            transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
-            box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+            all: unset;
         }
         
         .service-card:hover::before {
@@ -913,6 +912,48 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .booking-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+.booking-button:hover {
+  background-color: #2980b9;
+}
+
+
+.auth-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #2980b9;
+}
+
+#signupButton {
+  background-color: #2ecc71;
+}
+
+#signupButton:hover {
+  background-color: #27ae60;
+}
+
     </style>
 </head>
 <body>
@@ -923,8 +964,8 @@
             <li><a href="#" class="nav-link">Home</a></li>
             <li><a href="#services" class="nav-link">Services</a></li>
             <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
-            <li><a href="#" onclick="document.getElementById('login-modal').style.display='block'" class="nav-link">Login</a></li>
-            <li><a href="#" onclick="document.getElementById('signup-modal').style.display='block'" class="btn">Sign Up</a></li>
+            <li><button id="loginButton" class="auth-button">Login</button></li>
+            <li><button id="signupButton" class="auth-button">Sign Up</button></li>
         </ul>
     </nav>
     
@@ -953,7 +994,9 @@
                 <div class="service-content">
                     <h3>Hairstyling</h3>
                     <p>Professional hairstyling for any occasion. From sleek blowouts to elegant updos, our artists create stunning looks.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
             
@@ -964,7 +1007,9 @@
                 <div class="service-content">
                     <h3>Nail art</h3>
                     <p>Expert nail art services including manicure, pedicure, nail extension, nail coloring.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
             
@@ -975,7 +1020,9 @@
                 <div class="service-content">
                     <h3>Eye Makeup</h3>
                     <p>Stunning eye makeup for any event. From natural day looks to dramatic evening glamour.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
             
@@ -986,7 +1033,9 @@
                 <div class="service-content">
                    <h3>Lip Makeup</h3>
                     <p>Perfect your pout with our expert lip color services. From subtle nudes to bold statement lips.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
             
@@ -997,7 +1046,9 @@
                 <div class="service-content">
                     <h3>Full Face Makeup</h3>
                     <p>Complete makeup application for special events, photoshoots, weddings, and other occasions.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
             
@@ -1008,7 +1059,9 @@
                 <div class="service-content">
                     <h3>Skincare</h3>
                     <p>Rejuvenate your skin with our premium skincare services including facials and treatments.</p>
-                    <button class="btn">Book Now</button>
+                    <button class="booking-button" onclick="window.location.href='appointment.html'">
+                        Book an Appointment
+                      </button>
                 </div>
             </div>
         </div>
@@ -1149,66 +1202,8 @@
         </div>
     </footer>
     
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('login-modal').style.display='none'">&times;</span>
-            <div class="modal-header">
-                <h2>Login to GlowUp</h2>
-            </div>
-            <form>
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="Enter your password" required>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="btn">Login</button>
-                    <p>Don't have an account? <a href="#" onclick="document.getElementById('login-modal').style.display='none'; document.getElementById('signup-modal').style.display='block'">Sign Up</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Sign Up Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('signup-modal').style.display='none'">&times;</span>
-            <div class="modal-header">
-                <h2>Join GlowUp</h2>
-            </div>
-            <form>
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" placeholder="Create a password" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-type">Account Type</label>
-                    <select id="signup-type" required>
-                        <option value="" disabled selected>Select account type</option>
-                        <option value="client">Client - Looking for beauty services</option>
-                        <option value="artist">Beauty Artist - Offering services</option>
-                    </select>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="btn">Create Account</button>
-                    <p>Already have an account? <a href="#" onclick="document.getElementById('signup-modal').style.display='none'; document.getElementById('login-modal').style.display='block'">Login</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-    
+   
+ 
     <!-- JavaScript -->
     <script>
         // Initialize Three.js Background for Hero Section
@@ -1412,6 +1407,18 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+  // Login button
+  document.getElementById('loginButton').addEventListener('click', function() {
+    window.location.href = 'auth.html?tab=login';
+  });
+  
+  // Signup button
+  document.getElementById('signupButton').addEventListener('click', function() {
+    window.location.href = 'auth.html?tab=signup';
+  });
+});
     </script>
 </body>
 </html>

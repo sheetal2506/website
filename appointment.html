@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .appointment-form {
+            display: grid;
+            grid-gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .success-message {
+            color: #27ae60;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+        }
+        
+        .service-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .service-option input {
+            margin-right: 10px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .time-slot.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .time-slot.unavailable {
+            background-color: #f5f5f5;
+            color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 600px) {
+            .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book an Appointment</h1>
+        
+        <form id="appointmentForm" class="appointment-form">
+           
+            
+            <div class="form-group">
+                <label for="date">Select Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Select Time</label>
+                <div class="time-slots">
+                    <div class="time-slot" data-time="9:00 AM">9:00 AM</div>
+                    <div class="time-slot" data-time="9:00 AM">10:00 AM</div>
+                    <div class="time-slot" data-time="11:00 AM">11:00 AM</div>
+                    <div class="time-slot" data-time="12:00 PM">12:00 PM</div>
+                    <div class="time-slot" data-time="1:00 PM">1:00 PM</div>
+                    <div class="time-slot" data-time="2:00 PM">2:00 PM</div>
+                    <div class="time-slot" data-time="3:00 PM">3:00 PM</div>
+                    <div class="time-slot" data-time="4:00 PM">4:00 PM</div>
+                </div>
+                <input type="hidden" id="selectedTime" name="time" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea id="notes" name="notes"></textarea>
+            </div>
+            
+            <button type="submit">Book Appointment</button>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            Your appointment has been successfully booked! We'll confirm shortly.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Time slot selection
+            const timeSlots = document.querySelectorAll('.time-slot');
+            const selectedTimeInput = document.getElementById('selectedTime');
+            
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    if (!this.classList.contains('unavailable')) {
+                        timeSlots.forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedTimeInput.value = this.dataset.time;
+                    }
+                });
+            });
+            
+            // Form submission
+            const form = document.getElementById('appointmentForm');
+            const successMessage = document.getElementById('successMessage');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!selectedTimeInput.value) {
+                    alert('Please select a time slot');
+                    return;
+                }
+                
+                // Here you would normally send the data to your server
+                // For demonstration, we'll just show the success message
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // In a real application, you would send this data to your server
+                const formData = new FormData(form);
+                const appointmentData = Object.fromEntries(formData);
+                console.log('Appointment Data:', appointmentData);
+                
+                // You can add your API call here
+                // Example:
+                // fetch('/api/appointments', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(appointmentData)
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log('Success:', data);
+                // })
+                // .catch(error => {
+                //     console.error('Error:', error);
+                // });
+            });
+            
+            // For demonstration, let's mark some slots as unavailable
+            // In a real application, this would come from your backend
+            const markUnavailableSlots = () => {
+                // Just marking random slots as unavailable for demonstration
+                const randomSlots = [1, 4, 6];
+                randomSlots.forEach(index => {
+                    if (timeSlots[index]) {
+                        timeSlots[index].classList.add('unavailable');
+                    }
+                });
+            };
+            
+            markUnavailableSlots();
+        });
+    </script>
+</body>
+</html>
